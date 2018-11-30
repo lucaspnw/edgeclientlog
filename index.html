@@ -1,0 +1,127 @@
+<html>
+
+<head>
+
+<!-- BEGIN Simile installation -->
+<script>
+Timeline_ajax_url="/edgeclientlog/include/timeline/timeline_ajax/simile-ajax-api.js";
+Timeline_urlPrefix='/edgeclientlog/include/timeline/timeline_js/';       
+Timeline_parameters='bundle=true';
+</script>
+<script src="include/timeline/timeline_js/timeline-api.js" type="text/javascript"></script>
+<!-- END Simile installation -->
+
+<!-- <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
+
+-->
+<script src="include/store2.js"></script><!-- local storage library, ref: https://github.com/nbubna/store -->
+<script src="include/jquery-3.1.0.js"></script>
+<script src="include/jquery-ui.js"></script>
+<script src="include/lz-string.js"></script><!-- compressor for our big text log files, ref: http://pieroxy.net/blog/pages/lz-string/index.html -->
+<script src="include/rules.js"></script><!-- these are our log message to tag translation tables, exports logrules() function to return the json blob -->
+<script src="include/edgeclientlog-misc.js"></script>
+<link rel="stylesheet" href="include/jquery-ui.css">
+<link rel='stylesheet' href='include/ecl-style.css' type='text/css' />
+
+<div id="disclaimer"></div>
+<script>
+
+function get_browser(){
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
+        return {name:'IE',version:(tem[1]||'')};
+        }   
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR\/(\d+)/)
+        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+        }   
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {
+      name: M[0],
+      version: M[1]
+    };
+}
+
+var browser = get_browser();
+
+var highlightErrorTracker = new Array; // this guy keeps track of clicking on the "Errors:" boxes at the top
+var relatedEventsTracker = new Array;
+var beginAndEndEvents = new Array;
+
+if(browser.name == 'IE') {
+   alert('This page does not work properly in IE because lack of its lack of certain JS functions. Sorry.')
+}
+
+
+// erg, globals
+var tl;           // global timeline object
+var eventSource;  // global timeline event source object so we can stuff new events into the timeline
+var resizeTimerID = null; // global thing to do with resizing the timeline
+
+function onLoad() {
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+  
+  // Init the timeline stuff
+
+
+  resizeTimerID = null;
+
+  $( "#disclaimer" ).dialog({ 
+    autoOpen: true,
+    position: { my: "top", at: "bottom", of: $("#timedEventsTable") },
+    width: 300
+  });
+  $('#disclaimer').html("Edge Client Log Viewer pre-release preview copyright 2016 F5 Networks, Inc.<br>Portions Copyright The SIMILE Project 2003-2005.<br>Portions Copyright 2016 The jQuery Foundation<br><b>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</b><br>Press ESC to dismiss this notification.");
+
+};
+
+
+function onResize() {
+    if (resizeTimerID == null) {
+        resizeTimerID = window.setTimeout(function() {
+            resizeTimerID = null;
+            if(! typeof tl === 'object' ) { return; }
+            else { tl.layout(); }
+        }, 500);
+    }
+}
+
+
+
+
+</script>
+<title>Edge Client Log Reader</title>
+</head>
+
+<body onload="onLoad()" onresize="onResize()">
+
+<div id="legend" class="legend"></div>
+
+<noscript>
+This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.
+</noscript>
+<div id="d"><div id="popcontents"></div></div>
+<div class="controls" id="controls">
+  <span class="image-upload">
+    <label for="files">
+        <img src="uploadbutton.png" height="30" width="30" title="Upload"/>
+    </label>
+
+    <input type="file" style="display:none;" name="files[]" id="files" multiple />
+  </span>
+  <!-- <a href=edgeclientlog.mp4>intro video</a> -->
+
+  <span class="timedEvents">
+    <table class="timedEventsTable" id="timedEventsTable"></table>
+  </span>
+  <div id="filterdiv" class="filterdiv"></div>
+</div>
+
+<div class="timelinediv" id="my-timeline"><span class="notyetloaded">Upload an Edge Client Report</span></div>
+
+<div id="contents" class="contents"><span class="notyetloaded"></span></div>
+
+</body>
+</html>
