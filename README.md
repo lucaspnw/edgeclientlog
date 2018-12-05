@@ -5,7 +5,7 @@ This project is a rough proof of concept for a log visualizer for Windows F5 Edg
 # approach
 The parsing is done in a very simple (and expensive) way: 
 
-* The user generates an F5 Report using the f5wininfo utility. This utility is available on any APM-provisioned BIG-IP appliance at https://<your bigip>/downloads/f5wininfo.exe. The user saves the report to a filesystem. The report contains several log files in either HTML or TXT format. Use HTML format for this purpose.
+* The user generates an F5 Report using the f5wininfo utility. This utility is available on any APM-provisioned BIG-IP appliance at https://(your bigip)/public/download/f5wininfo.exe. The user saves the report to a filesystem. The report contains several log files in either HTML or TXT format. Use HTML format for this purpose.
 * User browses to the edgeclientlog web site (this project).
 * User "uploads" using HTML5 mechanisms from the filesystem to the user's browser. The ux is the same as a file upload to a server.
 * Edgeclientlog decompresses the f5report file.
