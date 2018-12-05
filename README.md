@@ -26,5 +26,8 @@ The parsing is done in a very simple (and expensive) way:
 * Refactor the whole thing. Probably twice.
 
 # Usage
-The files here
-The idea is that users will generate a logging report
+The files here are simply a static web site. They can be used on any web server.
+
+# License
+Portions Copyright The SIMILE Project 2003-2005.
+Portions Copyright 2016 The jQuery Foundation
