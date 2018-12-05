@@ -28,6 +28,9 @@ The parsing is done in a very simple (and expensive) way:
 # Usage
 The files here are simply a static web site. They can be used on any web server.
 
+# Screenshot
+![alt text](https://raw.githubusercontent.com/lucaspnw/edgeclientlog/master/edgeclientlog.png)
+
 # License
 Portions Copyright The SIMILE Project 2003-2005.
 Portions Copyright 2016 The jQuery Foundation
