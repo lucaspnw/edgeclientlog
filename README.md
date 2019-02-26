@@ -2,6 +2,8 @@
 
 This project is a rough proof of concept for a log visualizer for Windows F5 Edge Client log files. It's 100% client-side, so that the log file does not need to be uploaded to a server. This avoids concerns with data retention and security, because the sensitive data is only parsed and interpreted inside the user's browser. Uploading to a server for analysis is not required.
 
+I'm working on a refactor of this project using D3 and web workers. The new one will be much faster.
+
 # approach
 The parsing is done in a very simple (and expensive) way: 
 
